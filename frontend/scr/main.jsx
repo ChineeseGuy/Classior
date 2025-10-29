@@ -1,69 +1,34 @@
 import { createRoot } from "react-dom/client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-function Controls({ targetId, titleId, initialAlign, initialText }) {
-  const [align, setAlign] = useState(initialAlign || "left");
-  const [text, setText] = useState(initialText || "");
-
-  // Apply alignment class to the Flask paragraph without re-rendering it
+function PrettyButtons() {
   useEffect(() => {
-    const el = document.getElementById(targetId);
-    if (!el) return;
-    el.classList.remove("align-left","align-center","align-right");
-    el.classList.add(`align-${align}`);
-  }, [align, targetId]);
+    const buttons = document.querySelectorAll("button[id^='flaskButton']");
+    buttons.forEach(btn => {
+      // Basic modern button look
+      btn.style.backgroundColor = "#007bff";
+      btn.style.color = "#fff";
+      btn.style.border = "none";
+      btn.style.borderRadius = "8px";
+      btn.style.padding = "10px 16px";
+      btn.style.margin = "4px";
+      btn.style.fontSize = "1rem";
+      btn.style.cursor = "pointer";
+      btn.style.transition = "all 0.2s ease";
 
-  // Update text content of the Flask paragraph/title
-  useEffect(() => {
-    const el = document.getElementById(targetId);
-    if (el) el.textContent = text;
-  }, [text, targetId]);
+      // Add hover effect
+      btn.addEventListener("mouseenter", () => {
+        btn.style.backgroundColor = "#0056b3";
+        btn.style.transform = "scale(1.05)";
+      });
+      btn.addEventListener("mouseleave", () => {
+        btn.style.backgroundColor = "#007bff";
+        btn.style.transform = "scale(1)";
+      });
+    });
+  }, []);
 
   return (
-    <div>
-      <strong>Layout controls (React):</strong>
-      <div style={{ display: "inline-flex", gap: 8, marginLeft: 8 }}>
-        <button onClick={() => setAlign("left")}>Left</button>
-        <button onClick={() => setAlign("center")}>Center</button>
-        <button onClick={() => setAlign("right")}>Right</button>
-      </div>
-
-      <div style={{ marginTop: 8 }}>
-        <label>
-          Edit text:&nbsp;
-          <input
-            value={text}
-            onChange={e => setText(e.target.value)}
-            placeholder="Type new content..."
-          />
-        </label>
-      </div>
-
-      <div style={{ marginTop: 8 }}>
-        <button onClick={() => {
-          const t = document.getElementById(titleId);
-          if (t) t.textContent = "Title changed by React";
-        }}>
-          Change Title
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// Read initial props injected by Flask
-const dataTag = document.getElementById("initial-props");
-const props = dataTag ? JSON.parse(dataTag.textContent) : {};
-
-// Mount only into the control slot; we don't re-render Flask content
-const mount = document.getElementById("layout-controls");
-if (mount) {
-  createRoot(mount).render(
-    <Controls
-      targetId={props.targetId}
-      titleId={props.titleId}
-      initialAlign={props.initialAlign}
-      initialText={props.initialText}
-    />
-  );
-}
+    <div style={{ fontFamily: "system-ui", fontSize: "0.9rem", color: "#333" }}>
+      <p>✨ React enhanced your Flask buttons!</p>
+    </div
