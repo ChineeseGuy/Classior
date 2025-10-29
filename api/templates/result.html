@@ -1,13 +1,47 @@
 <!doctype html>
 <html>
-   <body>
-      <table border = 1>
-         {% for key, value in result.items() %}
-            <tr>
-               <th> {{ key }} </th>
-               <td> {{ value }} </td>
-            </tr>
-         {% endfor %}
-      </table>
-   </body>
+  <head>
+    <meta charset="utf-8" />
+    <title>Flask + React (enhanced)</title>
+    <style>
+      /* simple alignment classes React will toggle */
+      .align-left  { text-align: left; }
+      .align-center{ text-align: center; }
+      .align-right { text-align: right; }
+      .container   { max-width: 720px; margin: 40px auto; font-family: system-ui; }
+      .toolbar     { margin-bottom: 16px; }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- React will mount controls here, but the content below is 100% Flask-rendered -->
+      <div id="layout-controls" class="toolbar"></div>
+
+      <!-- Your Flask-created content -->
+      <h1 id="title">Flask-made title</h1>
+
+      <p id="content" class="align-{{ initial_align }}">
+        {{ initial_text }}
+      </p>
+
+      <!-- Example Flask-made buttons -->
+      <button id="flaskButton1" type="button">Flask Button A</button>
+      <button id="flaskButton2" type="button">Flask Button B</button>
+    </div>
+
+    <!-- Pass initial data for React to read -->
+    <script id="initial-props" type="application/json">
+      {
+        "targetId": "content",
+        "titleId": "title",
+        "initialAlign": "{{ initial_align|tojson }}",
+        "initialText": {{ initial_text|tojson }}
+      }
+    </script>
+
+    <!-- Load your React bundle (dev via Vite; prod via your static host/CDN) -->
+    <!-- DEV with Vite running on :5173 -->
+    <script type="module" src="http://localhost:5173/@vite/client"></script>
+    <script type="module" src="http://localhost:5173/src/main.jsx"></script>
+  </body>
 </html>

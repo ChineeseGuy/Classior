@@ -2,17 +2,10 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+@app.get("/")
+def home():
+    # Pass any initial values you want React to read
+    return render_template("result.html", initial_text="Hello from Flask", initial_align="left")
 
-@app.route('/')
-def hello():
-    return 'Hello, world'
-
-
-@app.route('/test')
-def test():
-    return 'Test'
-
-@app.route('/result')
-def result():
-   dict = {'phy':50,'che':60,'maths':70}
-   return render_template('result.html', result = dict)
+if __name__ == "__main__":
+    app.run(port=5000, debug=True)
